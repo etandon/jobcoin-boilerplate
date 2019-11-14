@@ -25,23 +25,23 @@ class JobcoinClient(config: Config)(implicit materializer: Materializer) {
   // Docs:
   // https://github.com/playframework/play-ws
   // https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators
-  def testGet(): Future[PlaceholderResponse] = async {
-    val response = await {
-      wsClient
-        .url("https://jsonplaceholder.typicode.com/posts/1")
-        .get()
-    }
-
-    response
-      .body[JsValue]
-      .validate[PlaceholderResponse]
-      .get
-  }
+//  def testGet(): Future[PlaceholderResponse] = async {
+//    val response = await {
+//      wsClient
+//        .url("https://jsonplaceholder.typicode.com/posts/1")
+//        .get()
+//    }
+//
+//    response
+//      .body[JsValue]
+//      .validate[PlaceholderResponse]
+//      .get
+//  }
 }
 
 object JobcoinClient {
   case class PlaceholderResponse(userId: Int, id: Int, title: String, body: String)
-  object PlaceholderResponse {
-    implicit val jsonReads: Reads[PlaceholderResponse] = Json.reads[PlaceholderResponse]
-  }
+//  object PlaceholderResponse {
+//    implicit val jsonReads: Reads[PlaceholderResponse] = Json.reads[PlaceholderResponse]
+//  }
 }
