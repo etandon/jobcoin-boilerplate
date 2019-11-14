@@ -20,8 +20,8 @@ object JobcoinMixer {
     val config = ConfigFactory.load()
 
     // Test HTTP client
-    // val client = new JobcoinClient(config)
-    // client.testGet().map(response => println(s"Response:\n$response"))
+     val client = new JobcoinClient(config)
+     client.testGet().map(response => println(s"Response:\n$response"))
 
     try {
       while (true) {
