@@ -10,5 +10,4 @@ trait MixerEndpoints extends Endpoints with TemplateJsonSchema {
     endpoint(
       get(path / "api" / "address" / "assign"),
       jsonResponse[String]())
-
 }
