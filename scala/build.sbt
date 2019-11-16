@@ -18,6 +18,14 @@ libraryDependencies += "io.circe" %% "circe-core" % circeVersion
 libraryDependencies += "io.circe" %% "circe-generic" % circeVersion
 libraryDependencies += "io.circe" %% "circe-parser" % circeVersion
 libraryDependencies += "io.circe" %% "circe-generic-extras" % circeVersion
+libraryDependencies += "org.julienrf" %% "endpoints-algebra" % endpointsVersion
+libraryDependencies += "org.julienrf" %% "endpoints-openapi" % endpointsVersion
+libraryDependencies += "org.julienrf" %% "endpoints-akka-http-server" % endpointsVersion
+libraryDependencies += "org.julienrf" %% "endpoints-akka-http-server-circe" % endpointsVersion
+libraryDependencies += "org.julienrf" %% "endpoints-json-schema-generic" % endpointsVersion
+libraryDependencies += "org.julienrf" %% "endpoints-json-schema-circe" % endpointsVersion
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
+libraryDependencies += "com.github.pureconfig" %% "pureconfig" % pureConfigVersion
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.12",
