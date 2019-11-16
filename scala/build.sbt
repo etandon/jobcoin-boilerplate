@@ -3,7 +3,7 @@ name := "gemini-jobcoin-scala"
 
 version := "0.1"
 
-scalaVersion := "2.12.5"
+scalaVersion := "2.11.12"
 
 
 trapExit := false
@@ -16,6 +16,7 @@ libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.9.7"
 libraryDependencies += "de.heikoseeberger" %% "akka-http-circe" % akkaHttpCirceVersion
 libraryDependencies += "io.circe" %% "circe-core" % circeVersion
 libraryDependencies += "io.circe" %% "circe-generic" % circeVersion
+libraryDependencies += "io.circe" %% "circe-parser" % circeVersion
 libraryDependencies += "io.circe" %% "circe-generic-extras" % circeVersion
 
 libraryDependencies ++= Seq(

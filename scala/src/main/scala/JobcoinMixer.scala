@@ -6,7 +6,10 @@ import scala.io.StdIn
 import com.typesafe.config.ConfigFactory
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.duration.Duration
 
 object JobcoinMixer {
   object CompletedException extends Exception { }
@@ -21,7 +24,8 @@ object JobcoinMixer {
 
     // Test HTTP client
      val client = new JobcoinClient(config)
-     client.testGet().map(response => println(s"Response:\n$response"))
+     println(Await.result(client.getTransactions,Duration.Inf))
+     println(Await.result(client.getAddresses("Eshan") ,Duration.Inf))
 
     try {
       while (true) {
