@@ -6,7 +6,7 @@ import akka.stream.ActorMaterializer
 import com.etandon.jobcoin.api.routes.ApiServer
 import com.etandon.jobcoin.app.{AddressService, WithdrawlActor}
 import com.etandon.jobcoin.config.Configuration
-import com.etandon.jobcoin.infra.datasources.AddressFileReader
+import com.etandon.jobcoin.infra.datasources.{AddressFileReader, JobcoinClient}
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -19,12 +19,13 @@ class JobcoinApp(config: Configuration) extends LazyLogging {
   implicit val conf: Configuration = config
 
   val addressService = new AddressService(AddressFileReader.read.getOrElse(Set.empty))
+  val jobcoinClient = new JobcoinClient()
   val apiServer = new ApiServer(addressService)
   val binding: Future[Http.ServerBinding] =
     Http()
       .bindAndHandle(apiServer.routes, config.server.host, config.server.port)
 
-  val withdrawlActor = actorSystem.actorOf(Props(new WithdrawlActor()))
+  val withdrawlActor = actorSystem.actorOf(Props(new WithdrawlActor(jobcoinClient)))
 
   val cancellable =
     actorSystem.scheduler

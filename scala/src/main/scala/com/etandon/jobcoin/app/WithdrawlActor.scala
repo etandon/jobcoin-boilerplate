@@ -6,12 +6,13 @@ import java.util.concurrent.TimeUnit
 import akka.actor.Actor
 import akka.pattern.pipe
 import akka.stream.ActorMaterializer
+import com.etandon.jobcoin.infra.datasources.JobcoinClient
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 
-class WithdrawlActor()(implicit am: ActorMaterializer) extends Actor with LazyLogging {
+class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterializer) extends Actor with LazyLogging {
   import context.dispatcher
   val r = new scala.util.Random
   def receive = {
@@ -19,7 +20,13 @@ class WithdrawlActor()(implicit am: ActorMaterializer) extends Actor with LazyLo
     case (addressService: AddressService, lastPull: Option[LocalDateTime]) => {
       val now = LocalDateTime.now
       logger.debug(s"$lastPull: $now: ${addressService.getAddressMap}")
-      Future.successful((addressService,now, "Transfer_Complete")).pipeTo(self)(sender())
+      //Future.successful((addressService,now, "Transfer_Complete")).pipeTo(self)(sender())
+      jobcoinClient.getTransactions.map{
+        case t => {
+          logger.debug(s"Transactions: $t")
+          (addressService,now, "Transfer_Complete")
+        }
+      }.pipeTo(self)(sender())
     }
     case (addressService: AddressService, lastPull: LocalDateTime, action: String) => {
       logger.debug(s"Action: $action")

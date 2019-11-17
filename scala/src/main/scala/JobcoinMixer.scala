@@ -24,9 +24,9 @@ object JobcoinMixer {
     val config = ConfigFactory.load()
 
     // Test HTTP client
-     val client = new JobcoinClient(config)
-     println(Await.result(client.getTransactions,Duration.Inf))
-     println(Await.result(client.getAddresses("Eshan") ,Duration.Inf))
+//     val client = new JobcoinClient(config)
+//     println(Await.result(client.getTransactions,Duration.Inf))
+//     println(Await.result(client.getAddresses("Eshan") ,Duration.Inf))
 
     try {
       while (true) {

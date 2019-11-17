@@ -5,16 +5,14 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpMethods, HttpRequest, Uri}
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.Materializer
+import com.etandon.jobcoin.config.Configuration
 import com.etandon.jobcoin.domain.{Addresses, Transaction}
-import com.typesafe.config.Config
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 
 import scala.concurrent.ExecutionContext
 
-class JobcoinClient(config: Config)(implicit actorSystem: ActorSystem,materializer: Materializer) {
+class JobcoinClient()(implicit actorSystem: ActorSystem,materializer: Materializer,config: Configuration) {
 
-  private val apiAddressesUrl = config.getString("jobcoin.apiAddressesUrl")
-  private val apiTransactionsUrl = config.getString("jobcoin.apiTransactionsUrl")
   private def httpRequest(url: String) = HttpRequest(
     HttpMethods.GET,
     Uri(url)
@@ -25,7 +23,7 @@ class JobcoinClient(config: Config)(implicit actorSystem: ActorSystem,materializ
   // https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators
   def getTransactions() = {
     Http()
-    .singleRequest(httpRequest(apiTransactionsUrl))
+    .singleRequest(httpRequest(config.api.transactionsUrl))
     .flatMap { res =>
       Unmarshal(res.entity)
         .to[List[Transaction]]
@@ -33,7 +31,7 @@ class JobcoinClient(config: Config)(implicit actorSystem: ActorSystem,materializ
   }
   def getAddresses(user: String) = {
     Http()
-      .singleRequest(httpRequest(s"$apiAddressesUrl/$user"))
+      .singleRequest(httpRequest(s"${config.api.addressesUrl}/$user"))
       .flatMap { res =>
         Unmarshal(res.entity)
           .to[Addresses]
