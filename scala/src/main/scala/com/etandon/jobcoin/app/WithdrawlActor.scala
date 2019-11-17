@@ -9,7 +9,6 @@ import akka.stream.ActorMaterializer
 import com.etandon.jobcoin.infra.datasources.JobcoinClient
 import com.typesafe.scalalogging.LazyLogging
 
-import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 
 class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterializer) extends Actor with LazyLogging {
@@ -20,14 +19,22 @@ class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterialize
     case (addressService: AddressService, lastPull: Option[LocalDateTime]) => {
       val now = LocalDateTime.now(ZoneOffset.UTC)
       logger.debug(s"$lastPull: $now: ${addressService.getAddressMap}")
-      //Future.successful((addressService,now, "Transfer_Complete")).pipeTo(self)(sender())
-      jobcoinClient.getTransactions.map{
-        case t => {
-          val transToBeProcessed = t.filter(t => lastPull.forall(lp => t.timestamp.isAfter(lp))).filter(_.timestamp.isBefore(now))
-          logger.debug(s"Transactions: $transToBeProcessed")
-          (addressService,now, "Transfer_Complete")
+      (for{
+         trans <- jobcoinClient.getTransactions
+         filteredT = trans
+                    //TODO: Ideally last pull should be pulled from DB so that the application can pull data from where it left
+                    .filter(t => lastPull.forall(lp => t.timestamp.isAfter(lp)))
+                    .filter(_.timestamp.isBefore(now))
+                    .filter(t => addressService.getAddressMap.contains(t.toAddress))
+         addrBalance <- jobcoinClient.getAddresses(filteredT.map(_.toAddress))
+      } yield {
+        logger.debug(s"Transactions: $filteredT")
+        logger.debug(s"Address Balance: $addrBalance")
+        addrBalance.foreach { a =>
+
         }
-      }.pipeTo(self)(sender())
+        (addressService,now, "Transfer_Complete")
+      }).pipeTo(self)(sender())
     }
     case (addressService: AddressService, lastPull: LocalDateTime, action: String) => {
       logger.debug(s"Action: $action")

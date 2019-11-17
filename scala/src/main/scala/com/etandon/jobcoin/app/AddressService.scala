@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext
 class AddressService()(implicit executionContext: ExecutionContext) extends LazyLogging {
   //TODO: Available and used addresses should be saved in a persistence layer. Right now saving it in class variables to make things simple
   private var availAddresses: Set[String] = Set()
-  private var addressMap: Map[String, List[String]] = Map.empty
+  private var addressMap: Map[String, List[String]] = Map("092a10ae-9d7d-4d0f-b40a-ede77800c4b5" -> List("Eshan1")) //Map.empty
   def this(initAddresses: Set[String])(implicit ec: ExecutionContext) = {
     this
     this.availAddresses =  initAddresses

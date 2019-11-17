@@ -2,7 +2,6 @@ package com.etandon.jobcoin.domain
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
 import io.circe.{Decoder, Encoder}
 import io.circe.generic.semiauto.deriveDecoder

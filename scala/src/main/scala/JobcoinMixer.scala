@@ -6,6 +6,7 @@ import scala.io.StdIn
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.etandon.jobcoin.config.{Configuration, JobcoinConfigLoader}
+import com.etandon.jobcoin.domain.Transfer
 import com.etandon.jobcoin.infra.datasources.JobcoinClient
 
 import scala.concurrent.Await
@@ -25,7 +26,9 @@ object JobcoinMixer {
       case Right(config) => {
         implicit val conf: Configuration = config
         val client = new JobcoinClient()
-        println(Await.result(client.getTransactions,Duration.Inf))
+        //println(Await.result(client.getTransactions,Duration.Inf))
+        val transfer = Transfer("092a10ae-9d7d-4d0f-b40a-ede77800c4b5","Eshan1","1")
+        println(Await.result(client.postTransaction(transfer),Duration.Inf))
       }
       case Left(e) =>
         println(
