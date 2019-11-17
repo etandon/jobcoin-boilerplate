@@ -1,7 +1,5 @@
 package com.etandon.jobcoin
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
@@ -26,11 +24,11 @@ class JobcoinApp(config: Configuration) extends LazyLogging {
     Http()
       .bindAndHandle(apiServer.routes, config.server.host, config.server.port)
 
-  val withdrawlActor = actorSystem.actorOf(Props(classOf[WithdrawlActor]))
+  val withdrawlActor = actorSystem.actorOf(Props(new WithdrawlActor()))
 
   val cancellable =
     actorSystem.scheduler
-      .schedule(Duration.Zero, FiniteDuration(10, TimeUnit.SECONDS), withdrawlActor, addressService)
+      .scheduleOnce(Duration.Zero, withdrawlActor, (addressService,None))
 
   sys.addShutdownHook {
     binding

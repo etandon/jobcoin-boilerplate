@@ -6,6 +6,7 @@ import scala.io.StdIn
 import com.typesafe.config.ConfigFactory
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+import com.etandon.jobcoin.infra.datasources.JobcoinClient
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits._
