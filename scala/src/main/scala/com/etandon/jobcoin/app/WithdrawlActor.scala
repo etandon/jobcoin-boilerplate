@@ -1,6 +1,6 @@
 package com.etandon.jobcoin.app
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneOffset}
 import java.util.concurrent.TimeUnit
 
 import akka.actor.Actor
@@ -16,14 +16,15 @@ class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterialize
   import context.dispatcher
   val r = new scala.util.Random
   def receive = {
-    case task: String => println(s"$task: ${LocalDateTime.now}")
+    case task: String => println(s"$task: ${LocalDateTime.now(ZoneOffset.UTC)}")
     case (addressService: AddressService, lastPull: Option[LocalDateTime]) => {
-      val now = LocalDateTime.now
+      val now = LocalDateTime.now(ZoneOffset.UTC)
       logger.debug(s"$lastPull: $now: ${addressService.getAddressMap}")
       //Future.successful((addressService,now, "Transfer_Complete")).pipeTo(self)(sender())
       jobcoinClient.getTransactions.map{
         case t => {
-          logger.debug(s"Transactions: $t")
+          val transToBeProcessed = t.filter(t => lastPull.forall(lp => t.timestamp.isAfter(lp))).filter(_.timestamp.isBefore(now))
+          logger.debug(s"Transactions: $transToBeProcessed")
           (addressService,now, "Transfer_Complete")
         }
       }.pipeTo(self)(sender())

@@ -3,13 +3,12 @@ package com.gemini.jobcoin
 import java.util.UUID
 
 import scala.io.StdIn
-import com.typesafe.config.ConfigFactory
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+import com.etandon.jobcoin.config.{Configuration, JobcoinConfigLoader}
 import com.etandon.jobcoin.infra.datasources.JobcoinClient
 
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration.Duration
 
 object JobcoinMixer {
@@ -21,11 +20,21 @@ object JobcoinMixer {
     implicit val materializer = ActorMaterializer()
 
     // Load Config
-    val config = ConfigFactory.load()
-
     // Test HTTP client
-//     val client = new JobcoinClient(config)
-//     println(Await.result(client.getTransactions,Duration.Inf))
+    JobcoinConfigLoader.load() match {
+      case Right(config) => {
+        implicit val conf: Configuration = config
+        val client = new JobcoinClient()
+        println(Await.result(client.getTransactions,Duration.Inf))
+      }
+      case Left(e) =>
+        println(
+          s"Could not start Jobcoin server. Errors occured: ${e.toList
+            .map(_.description)}")
+        sys.exit(1)
+    }
+
+
 //     println(Await.result(client.getAddresses("Eshan") ,Duration.Inf))
 
     try {

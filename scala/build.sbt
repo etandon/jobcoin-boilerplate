@@ -27,6 +27,7 @@ libraryDependencies += "org.julienrf" %% "endpoints-json-schema-circe" % endpoin
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
 libraryDependencies += "com.github.pureconfig" %% "pureconfig" % pureConfigVersion
 libraryDependencies += "ch.qos.logback" % "logback-classic" % logbackClassicVersion
+libraryDependencies += "io.circe" %% "circe-java8" % circeVersion
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.12",
