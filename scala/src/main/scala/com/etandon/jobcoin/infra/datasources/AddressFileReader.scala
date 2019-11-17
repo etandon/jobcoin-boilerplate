@@ -7,14 +7,14 @@ import scala.io
 import scala.io.Codec
 
 object AddressFileReader extends LazyLogging {
-  def read(): Option[List[String]] = {
+  def read(): Option[Set[String]] = {
     Try(
       io.Source.fromURL(getClass.getResource("address-datasource.csv"))(
         Codec.UTF8)) match {
       case Success(res) =>
         val parsedLines = res
           .getLines()
-          .toList
+          .toSet
         if (parsedLines.exists(_.isEmpty)) {
           logger.error("Could not read and parse resource file")
           None

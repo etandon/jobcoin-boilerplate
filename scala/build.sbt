@@ -26,6 +26,7 @@ libraryDependencies += "org.julienrf" %% "endpoints-json-schema-generic" % endpo
 libraryDependencies += "org.julienrf" %% "endpoints-json-schema-circe" % endpointsVersion
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
 libraryDependencies += "com.github.pureconfig" %% "pureconfig" % pureConfigVersion
+libraryDependencies += "ch.qos.logback" % "logback-classic" % logbackClassicVersion
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.12",

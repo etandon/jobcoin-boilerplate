@@ -4,17 +4,19 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import com.etandon.jobcoin.api.routes.traits.MixerEndpoints
-import com.etandon.jobcoin.infra.datasources.AddressFileReader
+import com.etandon.jobcoin.app.AddressService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class MixerServer()(implicit val ec: ExecutionContext,
+class MixerServer(addressService: AddressService)(implicit val ec: ExecutionContext,
                     as: ActorSystem,
                     am: ActorMaterializer
 ) extends BaseEndpointsServer with MixerEndpoints
 {
   val routes: Route =
-    assignAddress.implementedByAsync { case _ =>
-      Future.successful(AddressFileReader.read.map(_.mkString).getOrElse("Not Found"))
+    assignAddress.implementedByAsync { case customerAddresses =>
+      addressService.assignAddress(customerAddresses.split(",").toList).map{
+        case a => Future.successful(a)
+      }.getOrElse(Future.failed(new Exception("Could not assign address")))
       }
 }
