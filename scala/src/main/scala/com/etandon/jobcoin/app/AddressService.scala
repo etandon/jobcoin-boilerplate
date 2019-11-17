@@ -23,4 +23,6 @@ class AddressService()(implicit executionContext: ExecutionContext) extends Lazy
     }
   }
 
+  def getAddressMap = addressMap
+
 }
