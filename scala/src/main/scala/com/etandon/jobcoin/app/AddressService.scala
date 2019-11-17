@@ -12,7 +12,7 @@ class AddressService()(implicit executionContext: ExecutionContext) extends Lazy
     this
     this.availAddresses =  initAddresses
   }
-  //TODO: Check if the customer address has already been assigned to a mixer address, throw error if assigned
+  //TODO: Check if the customer address has already been assigned to a mixer address, throw error if assigned?
   def assignAddress(customerAddress: List[String]): Option[String] = {
     val assignedAddress = availAddresses.headOption
     assignedAddress.map { case addr =>
