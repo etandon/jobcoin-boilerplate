@@ -3,7 +3,15 @@ package com.etandon.jobcoin
 import com.etandon.jobcoin.config.JobcoinConfigLoader
 import com.typesafe.scalalogging.LazyLogging
 
+/**
+ * Main class to start the Application.
+ */
+
 object Main extends LazyLogging {
+  /**
+   * Loads the configuration in the memory, exits f the configuration is not found.
+   * If the config is good, bootstraps the application using JobcoinApp
+   */
   def main(args: Array[String]) {
 
     JobcoinConfigLoader.load() match {
