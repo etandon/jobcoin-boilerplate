@@ -16,7 +16,6 @@ class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterialize
   import context.dispatcher
   val r = new scala.util.Random
   def receive = {
-    case task: String => println(s"$task: ${LocalDateTime.now(ZoneOffset.UTC)}")
     case (addressService: AddressService, lastPull: Option[LocalDateTime]) => {
       val now = LocalDateTime.now(ZoneOffset.UTC)
       logger.debug(s"$lastPull: $now: ${addressService.getAddressMap}")
