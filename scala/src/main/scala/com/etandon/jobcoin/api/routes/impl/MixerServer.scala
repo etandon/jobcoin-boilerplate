@@ -8,7 +8,10 @@ import com.etandon.jobcoin.api.routes.traits.MixerEndpoints
 import com.etandon.jobcoin.app.AddressService
 
 import scala.concurrent.{ExecutionContext, Future}
-
+/**
+ * API routes for the application.
+ *
+ */
 class MixerServer(addressService: AddressService)(implicit val ec: ExecutionContext,
                     as: ActorSystem,
                     am: ActorMaterializer

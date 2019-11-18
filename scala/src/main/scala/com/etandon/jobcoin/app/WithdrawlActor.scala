@@ -11,6 +11,10 @@ import com.etandon.jobcoin.infra.datasources.JobcoinClient
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.duration.FiniteDuration
+/**
+ * Main actor that acts as a mixer.
+ *
+ */
 
 class WithdrawlActor(jobcoinClient: JobcoinClient)(implicit am: ActorMaterializer) extends Actor with LazyLogging {
   import context.dispatcher
