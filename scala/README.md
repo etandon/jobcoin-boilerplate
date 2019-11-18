@@ -3,7 +3,7 @@
 ### Run
 `sbt run`
 
-Note: If sbt run does not work run the main method in Main.scala
+Note: If sbt run does not work, then run the main method in Main.scala
 
 The project consists of 2 major parts: 
 1) API to assign coin mixer owned address to the set of addresses provided by the user:
