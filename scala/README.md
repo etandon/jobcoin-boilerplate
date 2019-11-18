@@ -4,6 +4,8 @@ Simple base project for the Jobcoin project using Scala and SBT. It accepts retu
 ### Run
 `sbt run`
 
+Note: If sbt run does not work run the main method in Main.scala
+
 The project consists of 2 major parts: 
 1) API to assign coin mixer owned address to the set of addresses provided by the user:
 
