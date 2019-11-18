@@ -37,7 +37,7 @@ class JobcoinClient()(implicit actorSystem: ActorSystem,materializer: Materializ
       .flatMap { res =>
         Unmarshal(res.entity)
           .to[Addresses]
-      }
+      }.map(a => (user, a))
   }
 
   def getAddresses(users: List[String]) = Future.sequence(users.map(getAddress(_)))

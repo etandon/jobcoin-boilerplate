@@ -9,7 +9,7 @@ import io.circe.generic.semiauto._
 import scala.util.control.NonFatal
 
 
-case class Transaction(timestamp: LocalDateTime, toAddress: String, amount: String)
+case class Transaction(timestamp: LocalDateTime, toAddress: String, amount: String, fromAddress: Option[String])
 
 object Transaction {
   val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")

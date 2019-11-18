@@ -1,8 +1,5 @@
-package com.gemini.jobcoin
-
 import java.util.UUID
 
-import scala.io.StdIn
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.etandon.jobcoin.config.{Configuration, JobcoinConfigLoader}
@@ -11,6 +8,7 @@ import com.etandon.jobcoin.infra.datasources.JobcoinClient
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.io.StdIn
 
 object JobcoinMixer {
   object CompletedException extends Exception { }
@@ -46,7 +44,7 @@ object JobcoinMixer {
         val line = StdIn.readLine()
 
         if (line == "quit") throw CompletedException
-        
+
         val addresses = line.split(",")
         if (line == "") {
           println(s"You must specify empty addresses to mix into!\n$helpText")
